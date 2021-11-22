@@ -1,0 +1,46 @@
+import sys
+
+from aiogram import Bot, types
+from aiogram.dispatcher import Dispatcher
+from aiogram.utils import executor
+
+
+bot = Bot(token= '2112805827:AAFnb2a2knuJQ7lVtKeBVW8icKlH_48rLnI')         ## token стоит записать в отдельный файл
+dp = Dispatcher(bot)
+
+
+@dp.message_handler(commands=['start'])
+async def process_start_command(msg: types.Message):
+    await msg.reply("Тестируем\nВвод 1 / 2, с проверкой")
+    await print(msg)
+
+
+@dp.message_handler(regexp='[0-9]')
+async def echo_message(msg: types.Message):
+    if msg.text == '1':
+        number = int(msg.text)                                          ## number пока что не используется
+        output_data = "Correct! Вы ввели " + msg.text + "!"             ## её стоило бы сделать глобальной
+        await bot.send_message(msg.from_user.id, output_data)
+        await print(msg)
+
+    elif msg.text == '2':
+        number = int(msg.text)                                          ## number пока что не используется
+        output_data = "Correct! Вы ввели " + msg.text + "!"             ## её стоило бы сделать глобальной
+        await bot.send_message(msg.from_user.id, output_data)
+        await print(msg)
+
+    elif msg.text.isdigit():
+         await  bot.send_message(msg.from_user.id, "Введите либо 1, либо 2!")
+         await print(msg)
+
+    else:
+         await  bot.send_message(msg.from_user.id, "Введите цифру, а не String!")
+         await print(msg)
+
+@dp.message_handler()
+async def echo_message(msg: types.Message):
+    await  bot.send_message(msg.from_user.id, "Введите цифру, а не String!")
+    await print(msg)
+
+if __name__ == '__main__':
+    executor.start_polling(dp)
